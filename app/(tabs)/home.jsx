@@ -3,12 +3,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 
 import { images } from "../../constants";
-import useAppwrite from "../../lib/useAppwrite";
+
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
-import VideoCard from "../../components/VideoCard";
+
 import SearchInput from "../../components/SearchInput";
 import Trending from "../../components/Trending";
 import EmptyState from "../../components/EmptyState";
+import VideoCard from "../../components/VideoCard";
+import useAppwrite from "../../lib/useAppwrite";
 
 const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
@@ -27,11 +29,7 @@ const Home = () => {
       <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
-        renderItem={({ item }) => (
-          <Text className="text-3xl text-white">
-            {item.title}
-          </Text>
-        )}
+        renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
           <View className="flex my-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
@@ -39,9 +37,7 @@ const Home = () => {
                 <Text className="font-pmedium text-sm text-gray-100">
                   Welcome Back
                 </Text>
-                <Text className="text-2xl font-psemibold text-white">
-                  Gera
-                </Text>
+                <Text className="text-2xl font-psemibold text-white">Gera</Text>
               </View>
 
               <View className="mt-1.5">
