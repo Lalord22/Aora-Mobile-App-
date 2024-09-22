@@ -9,7 +9,6 @@ import EmptyState from "../../components/EmptyState";
 import SearchInput from "../../components/SearchInput";
 import VideoCard from "../../components/VideoCard";
 
-
 const Search = () => {
   const { query } = useLocalSearchParams();
   const { data: posts, refetch } = useAppwrite(() => searchPosts(query));
@@ -23,15 +22,7 @@ const Search = () => {
       <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
-        renderItem={({ item }) => (
-          <VideoCard
-            title={item.title}
-            thumbnail={item.thumbnail}
-            video={item.video}
-            creator={item.creator.username}
-            avatar={item.creator.avatar}
-          />
-        )}
+        renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
           <>
             <View className="flex my-6 px-4">
