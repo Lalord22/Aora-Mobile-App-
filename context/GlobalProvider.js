@@ -11,22 +11,33 @@ const GlobalProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getCurrentUser()
-      .then((res) => {
-        if (res) {
+    async function checkUserSession() {
+      try {
+        const currentUser = await getCurrentUser();
+
+        if (currentUser) {
           setIsLoggedIn(true);
-          setUser(res);
+          setUser(currentUser);
         } else {
           setIsLoggedIn(false);
           setUser(null);
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+
+        // Handle missing scope error (user is not authenticated)
+        if (error.message.includes("missing scope (account)")) {
+          console.log("Guest user - not logged in.");
+        }
+
+        setIsLoggedIn(false);
+        setUser(null);
+      } finally {
+        setLoading(false); // Stop loading after checking
+      }
+    }
+
+    checkUserSession();
   }, []);
 
   return (
